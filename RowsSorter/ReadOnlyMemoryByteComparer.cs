@@ -1,60 +1,46 @@
-﻿namespace RowsSorter
+﻿using static System.Runtime.InteropServices.JavaScript.JSType;
+namespace RowsSorter
 {
     internal class ReadOnlyMemoryByteComparer : IComparer<ReadOnlyMemory<byte>>
     {
-        /// <summary>
-        /// Compares the.
-        /// </summary>
-        /// <param name="array1">The array1.</param>
-        /// <param name="array2">The array2.</param>
-        /// <returns>An int.</returns>
+        private readonly byte _separator;
+
+        public ReadOnlyMemoryByteComparer(byte separator = (byte)'.')
+        {
+            _separator = separator;
+        }
+
         public int Compare(ReadOnlyMemory<byte> array1, ReadOnlyMemory<byte> array2)
         {
-            var (first1Segment, second1Segment) = SplitByteArray(array1);
-            var (first2Segment, second2Segment) = SplitByteArray(array2);
+            // Quick comparison of whole arrays first
+            int fullCompare = array1.Span.SequenceCompareTo(array2.Span);
+            if (fullCompare == 0)
+            {
+                return 0;
+            }
 
-            int secondCompare = CompareMemoryBytes(second1Segment, second2Segment);
+            var span1 = array1.Span;
+            var span2 = array2.Span;
+
+            int array1SeparatorIndex = span1.IndexOf(_separator);
+            int array2SeparatorIndex = span2.IndexOf(_separator);
+
+            // Compare second segments
+            ReadOnlySpan<byte> second1 = array1SeparatorIndex >= 0
+                ? span1.Slice(array1SeparatorIndex + 1)
+                : ReadOnlySpan<byte>.Empty;
+            ReadOnlySpan<byte> second2 = array2SeparatorIndex >= 0
+                ? span2.Slice(array2SeparatorIndex + 1)
+                : ReadOnlySpan<byte>.Empty;
+
+            int secondCompare = second1.SequenceCompareTo(second2);
             if (secondCompare != 0)
             {
                 return secondCompare;
             }
 
-            return CompareMemoryBytes(first1Segment, first2Segment);
-        }
-
-        /// <summary>
-        /// Compares the memory bytes.
-        /// </summary>
-        /// <param name="array1">The array1.</param>
-        /// <param name="array2">The array2.</param>
-        /// <returns>An int.</returns>
-        private static int CompareMemoryBytes(ReadOnlyMemory<byte> array1, ReadOnlyMemory<byte> array2)
-        {
-            int lengthComparison = array1.Length.CompareTo(array2.Length);
-            if (lengthComparison != 0)
-            {
-                return lengthComparison;
-            }
-
-            ReadOnlySpan<byte> span1 = array1.Span;
-            ReadOnlySpan<byte> span2 = array2.Span;
-
-            return span1.SequenceCompareTo(span2);
-        }
-
-        /// <summary>
-        /// Splits the byte array.
-        /// </summary>
-        /// <param name="data">The data.</param>
-        /// <param name="separator">The separator.</param>
-        /// <returns>A (ReadOnlyMemory&lt;byte&gt; firstSegment, ReadOnlyMemory&lt;byte&gt; secondSegment) .</returns>
-        private static (ReadOnlyMemory<byte> firstSegment, ReadOnlyMemory<byte> secondSegment) SplitByteArray(ReadOnlyMemory<byte> data,byte separator = (byte)'.')
-        {
-            int separatorIndex = data.Span.IndexOf(separator);
-
-            return separatorIndex >= 0
-                ? (data.Slice(0, separatorIndex), data.Slice(separatorIndex + 1))
-                : (data, ReadOnlyMemory<byte>.Empty);
+            // If second parts are equal, use the full compare result
+            return fullCompare;
         }
     }
 }
