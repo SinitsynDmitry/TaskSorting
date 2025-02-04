@@ -8,7 +8,9 @@ internal class Program
         string filePath;
         string outputPath;
         int batchSize = 100000; // default value
-
+                                // filePath = @"C:\test\test200M.txt";
+                                // filePath = @"C:\test\test2G.txt";
+                                // outputPath = @"C:\test\out2\output.txt";
         if (args.Length >= 2)
         {
             // Command line mode
@@ -54,7 +56,7 @@ internal class Program
             Console.WriteLine($"File size: {fileSizeGb:F2} GB");
 
             var stopwatch = Stopwatch.StartNew();
-            var sorter = new ExternalMergeSort();
+            var sorter = new ExternalMergeSorter();
             sorter.SortLargeFile(filePath, outputPath, batchSize);
 
             stopwatch.Stop();
