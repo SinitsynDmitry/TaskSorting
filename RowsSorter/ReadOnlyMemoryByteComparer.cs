@@ -1,10 +1,10 @@
 ﻿namespace RowsSorter;
-internal class ReadOnlyMemoryByteComparer2 : IComparer<ReadOnlyMemory<byte>>
+internal class ReadOnlyMemoryByteComparer : IComparer<ReadOnlyMemory<byte>>
 {
 
     private readonly byte _separator;
 
-    public ReadOnlyMemoryByteComparer2(byte separator = (byte)'.')
+    public ReadOnlyMemoryByteComparer(byte separator = (byte)'.')
     {
         _separator = separator;
     }
