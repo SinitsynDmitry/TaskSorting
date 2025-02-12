@@ -3,14 +3,22 @@ using System.Diagnostics;
 
 internal class Program
 {
+    /// <summary>
+    /// Mains the.
+    /// </summary>
+    /// <param name="args">The args.</param>
+    /// <returns>A Task.</returns>
     private static async Task Main(string[] args)
     {
         string filePath;
         string outputPath;
         int batchSize = 100000; // default value
-                                // filePath = @"C:\test\test200M.txt";
-                                // filePath = @"C:\test\test2G.txt";
-                                // outputPath = @"C:\test\out2\output.txt";
+
+        //outputPath = @"C:\test\out2\output.txt";
+        //filePath = @"C:\test\test20M.txt";
+        //filePath = @"C:\test\test200M.txt";
+        //filePath = @"C:\test\test2G.txt";
+
         if (args.Length >= 2)
         {
             // Command line mode
@@ -59,6 +67,8 @@ internal class Program
             var sorter = new ExternalMergeSorter();
             sorter.SortLargeFile(filePath, outputPath, batchSize);
 
+           // await sorter.SortLargeFileAsync(filePath, outputPath, batchSize);
+
             stopwatch.Stop();
             Console.WriteLine($"Time elapsed: {stopwatch.Elapsed}");
         }
@@ -69,6 +79,10 @@ internal class Program
         }
     }
 
+    /// <summary>
+    /// Gets the valid input file.
+    /// </summary>
+    /// <returns>A string.</returns>
     private static string GetValidInputFile()
     {
         while (true)
@@ -101,6 +115,10 @@ internal class Program
         }
     }
 
+    /// <summary>
+    /// Gets the valid output path.
+    /// </summary>
+    /// <returns>A string.</returns>
     private static string GetValidOutputPath()
     {
         while (true)
@@ -129,6 +147,10 @@ internal class Program
         }
     }
 
+    /// <summary>
+    /// Gets the valid batch size.
+    /// </summary>
+    /// <returns>An int.</returns>
     private static int GetValidBatchSize()
     {
         while (true)

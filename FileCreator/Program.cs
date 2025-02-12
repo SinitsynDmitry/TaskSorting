@@ -1,7 +1,14 @@
 ﻿using System.Diagnostics;
 
+namespace FileCreator;
+
 internal class Program
 {
+    /// <summary>
+    /// Mains the.
+    /// </summary>
+    /// <param name="args">The args.</param>
+    /// <returns>A Task.</returns>
     private static async Task Main(string[] args)
     {
         string filePath;
@@ -32,10 +39,12 @@ internal class Program
             filePath = GetValidOutputPath();
             rowsInFile = GetValidRowCount();
         }
+        //filePath = @"C:\test\test20M.txt";
+        //rowsInFile = 1000000L;
 
         #region Vocabulary
 
-        string[] vocabulary = {
+       string[] vocabulary = {
 		      ".cat\n",
               ".hello world\n",
               ".programming\n",
@@ -255,6 +264,10 @@ internal class Program
         }
     }
 
+    /// <summary>
+    /// Gets the valid output path.
+    /// </summary>
+    /// <returns>A string.</returns>
     private static string GetValidOutputPath()
     {
         while (true)
@@ -281,6 +294,10 @@ internal class Program
         }
     }
 
+    /// <summary>
+    /// Gets the valid row count.
+    /// </summary>
+    /// <returns>A long.</returns>
     private static long GetValidRowCount()
     {
         Console.WriteLine("Enter the number of rows in the file:");

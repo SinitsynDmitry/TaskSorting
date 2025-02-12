@@ -3,6 +3,8 @@ using System.Collections.Concurrent;
 using System.Collections.Immutable;
 using System.Text;
 
+namespace FileCreator;
+
 /// <summary>
 /// The file generator.
 /// </summary>

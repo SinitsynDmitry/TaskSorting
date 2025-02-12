@@ -1,9 +1,13 @@
-﻿namespace RowsSorter;
+﻿namespace RowsSorter.Shared;
 internal class ReadOnlyMemoryByteComparer : IComparer<ReadOnlyMemory<byte>>
 {
 
     private readonly byte _separator;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ReadOnlyMemoryByteComparer"/> class.
+    /// </summary>
+    /// <param name="separator">The separator.</param>
     public ReadOnlyMemoryByteComparer(byte separator = (byte)'.')
     {
         _separator = separator;

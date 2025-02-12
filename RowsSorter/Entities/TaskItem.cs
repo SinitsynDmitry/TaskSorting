@@ -1,26 +1,26 @@
-﻿namespace RowsSorter;
+﻿namespace RowsSorter.Entities;
 
 internal struct TaskItem
 {
     /// <summary>
     /// Gets the row.
     /// </summary>
-    public ReadOnlyMemory<byte> Row { get; init; }
+    public ByteChunkData Value { get; init; }
 
     /// <summary>
     /// Gets the priority.
     /// </summary>
-    public int Priority { get; init; }
+    public int Index { get; init; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="TaskItem"/> class.
     /// </summary>
     /// <param name="row">The row.</param>
     /// <param name="priority">The priority.</param>
-    public TaskItem(ReadOnlyMemory<byte> row, int priority)
+    public TaskItem(ByteChunkData row, int priority)
     {
-        Row = row;
-        Priority = priority;
+        Value = row;
+        Index = priority;
     }
 }
 

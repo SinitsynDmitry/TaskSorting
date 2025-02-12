@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Concurrent;
 using RowsSorter.Interfaces;
+using RowsSorter.Merger;
+using RowsSorter.Splitter;
 
 namespace RowsSorter;
 public class ExternalMergeSorter : IExternalMergeSorter
@@ -15,17 +12,25 @@ public class ExternalMergeSorter : IExternalMergeSorter
     const int MERGE_CYCLE = 30;
 
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ExternalMergeSorter"/> class.
+    /// </summary>
     public ExternalMergeSorter()
     {
-       _chunkMerger = new ChunkMerger();
+        _chunkMerger = new ChunkMerger();
         _fileSplitter = new FileSplitter();
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ExternalMergeSorter"/> class.
+    /// </summary>
+    /// <param name="fileSplitter">The file splitter.</param>
+    /// <param name="chunkMerger">The chunk merger.</param>
     public ExternalMergeSorter(IFileSplitter fileSplitter, IChunkMerger chunkMerger)
     {
         ArgumentNullException.ThrowIfNull(fileSplitter);
         ArgumentNullException.ThrowIfNull(chunkMerger);
-       
+
         _fileSplitter = fileSplitter;
         _chunkMerger = chunkMerger;
     }
@@ -46,6 +51,7 @@ public class ExternalMergeSorter : IExternalMergeSorter
 
         // Step 1: Synchronously split file into sorted chunks
         var chunks = _fileSplitter.SplitFile(inputFile, linesPerFile, tempOutputDir);
+
         var counter = 0;
         // Step 2: Parallel merge if there are many chunks
         while (chunks.Count > MERGE_CYCLE)
@@ -71,6 +77,13 @@ public class ExternalMergeSorter : IExternalMergeSorter
     }
 
 
+    // <summary>
+    // Sorts the large file async.
+    // </summary>
+    // <param name = "inputFile" > The input file.</param>
+    // <param name = "outputFile" > The output file.</param>
+    // <param name = "linesPerFile" > The lines per file.</param>
+    // <returns>A Task.</returns>
     /// <summary>
     /// Sorts the large file async.
     /// </summary>
