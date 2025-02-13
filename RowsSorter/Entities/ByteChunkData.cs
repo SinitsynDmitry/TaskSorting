@@ -31,13 +31,12 @@ public struct ByteChunkData
     }
 
     /// <summary>
-    /// Copies the to.
+    /// Copies the to span.
     /// </summary>
     /// <param name="buffer">The buffer.</param>
-    /// <param name="bufferOffset">The buffer offset.</param>
-    public void CopyTo(byte[] buffer, int bufferOffset)
+    public void CopyToSpan(Span<byte> buffer)
     {
-        _data.Span.CopyTo(buffer.AsSpan(bufferOffset));
+        _data.Span.CopyTo(buffer);
     }
 }
 

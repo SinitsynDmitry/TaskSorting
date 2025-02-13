@@ -49,11 +49,9 @@ public class ExternalMergeSorter : IExternalMergeSorter
             Directory.CreateDirectory(tempOutputDir);
         }
 
-        // Step 1: Synchronously split file into sorted chunks
         var chunks = _fileSplitter.SplitFile(inputFile, linesPerFile, tempOutputDir);
 
         var counter = 0;
-        // Step 2: Parallel merge if there are many chunks
         while (chunks.Count > MERGE_CYCLE)
         {
             int partSize = (int)Math.Sqrt(chunks.Count);
@@ -72,18 +70,9 @@ public class ExternalMergeSorter : IExternalMergeSorter
             counter++;
         }
 
-        // Step 3: Final synchronous merge
         _chunkMerger.MergeSortedChunks(chunks, outputFile);
     }
 
-
-    // <summary>
-    // Sorts the large file async.
-    // </summary>
-    // <param name = "inputFile" > The input file.</param>
-    // <param name = "outputFile" > The output file.</param>
-    // <param name = "linesPerFile" > The lines per file.</param>
-    // <returns>A Task.</returns>
     /// <summary>
     /// Sorts the large file async.
     /// </summary>
@@ -91,7 +80,7 @@ public class ExternalMergeSorter : IExternalMergeSorter
     /// <param name="outputFile">The output file.</param>
     /// <param name="linesPerFile">The lines per file.</param>
     /// <returns>A Task.</returns>
-    public async Task SortLargeFileAsync(string inputFile, string outputFile, int linesPerFile)
+    public async ValueTask SortLargeFileAsync(string inputFile, string outputFile, int linesPerFile)
     {
         var tempOutputDir = Path.Combine(Path.GetDirectoryName(outputFile)!, "temp");
         if (!Directory.Exists(tempOutputDir))
@@ -99,13 +88,12 @@ public class ExternalMergeSorter : IExternalMergeSorter
             Directory.CreateDirectory(tempOutputDir);
         }
 
-        // Start splitting and get chunks
         var chunks = await _fileSplitter.SplitFileAsync(inputFile, linesPerFile, tempOutputDir);
 
         while (chunks.Count > MERGE_CYCLE)
         {
             int partSize = (int)Math.Sqrt(chunks.Count);
-            var rangePartitioner = Partitioner.Create(0, chunks.Count, partSize).AsParallel();
+            var rangePartitioner = Partitioner.Create(0, chunks.Count, partSize).GetDynamicPartitions();
             var chunkFilesInternal = new ConcurrentBag<string>();
             var mergeTasks = new List<Task>();
             foreach (var range in rangePartitioner)
@@ -124,7 +112,6 @@ public class ExternalMergeSorter : IExternalMergeSorter
             chunks = chunkFilesInternal.ToList();
         }
 
-        // Merge the sorted chunks
         await _chunkMerger.MergeSortedChunksAsync(chunks, outputFile);
     }
 }
