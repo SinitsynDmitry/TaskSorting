@@ -1,49 +1,40 @@
 ﻿using RowsSorter.Interfaces;
-using RowsSorter.Extensions;
-using RowsSorter.Shared;
-using RowsSorter.Entities;
+using RowsSorter.Pipeline.Contexts;
 
 namespace RowsSorter.Splitter;
-internal class ChunkWriter : IChunkWriter
+public class ChunkWriter : IChunkWriter
 {
-    private readonly IFileStreamProvider _streamProvider;
+    private readonly IStreamProvider _streamProvider;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ChunkWriter"/> class.
     /// </summary>
-    public ChunkWriter()
+    public ChunkWriter(IStreamProvider streamProvider)
     {
-        _streamProvider = new FileStreamProvider();
+        ArgumentNullException.ThrowIfNull(streamProvider);
+        _streamProvider = streamProvider;
     }
-
 
     /// <summary>
     /// Writes the chunk.
     /// </summary>
-    /// <param name="outputFile">The output file.</param>
-    /// <param name="lines">The lines.</param>
-    /// <param name="chunkSize">The chunk size.</param>
-    /// <param name="buffer">The buffer.</param>
-    public void WriteChunk(string outputFile, IReadOnlyList<ByteChunkData> lines, int chunkSize, byte[]? buffer = null)
+    /// <param name="context">The context.</param>
+    public void WriteChunk(ChunkProcessingContext context)
     {
-        using var fileStream = _streamProvider.GetWriteStream(outputFile, chunkSize);
+        using var fileStream = _streamProvider.GetWriteStream(context.OutputFile, context.BytesRead);
 
-        fileStream.WriteChunk(lines, chunkSize, buffer);
+        fileStream.Write(context.Buffer, 0, context.BytesRead);
     }
-
 
     /// <summary>
     /// Writes the chunk async.
     /// </summary>
-    /// <param name="outputFile">The output file.</param>
-    /// <param name="lines">The lines.</param>
-    /// <param name="chunkSize">The chunk size.</param>
-    /// <param name="buffer">The buffer.</param>
+    /// <param name="context">The context.</param>
     /// <returns>A ValueTask.</returns>
-    public async ValueTask WriteChunkAsync(string outputFile, IReadOnlyList<ByteChunkData> lines, int chunkSize, byte[]? buffer = null)
+    public async ValueTask WriteChunkAsync(ChunkProcessingContext context)
     {
-        using var fileStream = _streamProvider.GetWriteStream(outputFile, chunkSize, true);
+        using var fileStream = _streamProvider.GetWriteStream(context.OutputFile, context.BytesRead, true);
 
-        await fileStream.WriteChunkAsync(lines, chunkSize, buffer);
+        await fileStream.WriteAsync(context.Buffer, 0, context.BytesRead);
     }
 }

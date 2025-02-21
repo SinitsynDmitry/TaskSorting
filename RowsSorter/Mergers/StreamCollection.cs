@@ -5,7 +5,7 @@ using RowsSorter.Interfaces;
 
 namespace RowsSorter.Merger;
 
-internal class StreamCollection : IStreamCollection
+public class StreamCollection : IStreamCollection
 {
     private readonly FileStream[] _readers;
     private bool _disposed;
@@ -16,9 +16,15 @@ internal class StreamCollection : IStreamCollection
     /// <param name="chunkFiles">The chunk files.</param>
     /// <param name="fileStreamProvider">The file stream provider.</param>
     /// <param name="isAsync">If true, is async.</param>
-    public StreamCollection(IReadOnlyList<string> chunkFiles, IFileStreamProvider fileStreamProvider, bool isAsync = false)
+    public StreamCollection(
+        IReadOnlyList<string> chunkFiles,
+        IStreamProvider fileStreamProvider,
+        bool isAsync = false
+    )
     {
-        _readers = chunkFiles.Select(p => fileStreamProvider.GetReadStream(p, isAsync: isAsync)).ToArray();
+        _readers = chunkFiles
+            .Select(p => fileStreamProvider.GetReadStream(p, isAsync: isAsync))
+            .ToArray();
     }
 
     /// <summary>
@@ -35,7 +41,7 @@ internal class StreamCollection : IStreamCollection
     /// Reads the line.
     /// </summary>
     /// <param name="i">The i.</param>
-    /// <param name="rowBuffer">The row buffer.</param>
+    /// <param name="rowBuffer">The row _buffer.</param>
     /// <returns>A ReadOnlyMemory&lt;byte&gt;? .</returns>
     public ByteChunkData? ReadLine(int i, Span<byte> rowBuffer)
     {
@@ -52,12 +58,11 @@ internal class StreamCollection : IStreamCollection
         return null;
     }
 
-
     /// <summary>
     /// Reads the line async.
     /// </summary>
     /// <param name="i">The i.</param>
-    /// <param name="rowBuffer">The row buffer.</param>
+    /// <param name="rowBuffer">The row _buffer.</param>
     /// <returns>A ValueTask.</returns>
     public async ValueTask<ByteChunkData?> ReadLineAsync(int i, Memory<byte> rowBuffer)
     {

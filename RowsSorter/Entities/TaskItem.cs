@@ -1,6 +1,6 @@
 ﻿namespace RowsSorter.Entities;
 
-internal struct TaskItem
+public struct TaskItem
 {
     /// <summary>
     /// Gets the row.

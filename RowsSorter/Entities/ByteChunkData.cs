@@ -33,7 +33,7 @@ public struct ByteChunkData
     /// <summary>
     /// Copies the to span.
     /// </summary>
-    /// <param name="buffer">The buffer.</param>
+    /// <param name="buffer">The _buffer.</param>
     public void CopyToSpan(Span<byte> buffer)
     {
         _data.Span.CopyTo(buffer);

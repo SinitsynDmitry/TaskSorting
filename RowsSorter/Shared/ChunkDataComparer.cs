@@ -4,7 +4,13 @@ namespace RowsSorter.Shared;
 
 public class ChunkDataComparer : IComparer<ByteChunkData>
 {
-    private readonly IComparer<ReadOnlyMemory<byte>> _dataComparer = new ReadOnlyMemoryByteComparer(46);
+    private readonly IComparer<ReadOnlyMemory<byte>> _dataComparer;
+
+    public ChunkDataComparer(IComparer<ReadOnlyMemory<byte>> dataComparer)
+    {
+        ArgumentNullException.ThrowIfNull(dataComparer);
+        _dataComparer = dataComparer;
+    }
 
     /// <summary>
     /// Compares the.
@@ -14,6 +20,6 @@ public class ChunkDataComparer : IComparer<ByteChunkData>
     /// <returns>An int.</returns>
     public int Compare(ByteChunkData x, ByteChunkData y)
     {
-        return _dataComparer.Compare( x._data,y._data);
+        return _dataComparer.Compare(x._data, y._data);
     }
 }

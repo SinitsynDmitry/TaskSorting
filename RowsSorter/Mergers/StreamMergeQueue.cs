@@ -1,18 +1,11 @@
 ﻿using RowsSorter.Entities;
 using RowsSorter.Interfaces;
-using RowsSorter.Shared;
 
 namespace RowsSorter.Merger;
 
-internal class StreamMergeQueue : ISortingQueue
+public class StreamMergeQueue : ISortingQueue
 {
     private readonly PriorityQueue<TaskItem, ByteChunkData> _priorityQueue;
-
-    //public StreamMergeQueue()
-    //{
-    //    _dataComparer = new ReadOnlyMemoryByteComparer();
-    //    _priorityQueue = new PriorityQueue<TaskItem, ReadOnlyMemory<byte>>(_dataComparer);
-    //}
 
     /// <summary>
     /// Initializes a new instance of the <see cref="StreamMergeQueue"/> class.
@@ -22,7 +15,6 @@ internal class StreamMergeQueue : ISortingQueue
     {
         ArgumentNullException.ThrowIfNull(comparer);
         _priorityQueue = new PriorityQueue<TaskItem, ByteChunkData>(comparer);
-
     }
 
     /// <summary>
@@ -57,10 +49,6 @@ internal class StreamMergeQueue : ISortingQueue
     /// </summary>
     public int Count
     {
-        get
-        {
-            return _priorityQueue.Count;
-        }
+        get { return _priorityQueue.Count; }
     }
-
 }

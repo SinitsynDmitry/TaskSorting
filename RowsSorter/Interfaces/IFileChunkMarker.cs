@@ -1,6 +1,6 @@
 ﻿namespace RowsSorter.Interfaces;
 
-public interface IStartPositionFinder
+public interface IFileChunkMarker
 {
 
     /// <summary>
@@ -10,7 +10,7 @@ public interface IStartPositionFinder
     /// <param name="partsCount">The parts count.</param>
     /// <param name="chunkSize">The chunk size.</param>
     /// <returns>A list of long.</returns>
-    IReadOnlyList<long> DetermineChunkStartPositions(string inputFile, int partsCount, long chunkSize);
+    IReadOnlyList<long> FindChunksStartPositions(string inputFile, int partsCount, long chunkSize);
 
     /// <summary>
     /// Determines the chunk start positions async.
@@ -19,5 +19,5 @@ public interface IStartPositionFinder
     /// <param name="partsCount">The parts count.</param>
     /// <param name="chunkSize">The chunk size.</param>
     /// <returns>A Task.</returns>
-    ValueTask<IReadOnlyList<long>> DetermineChunkStartPositionsAsync(string inputFile, int partsCount, long chunkSize);
+    ValueTask<IReadOnlyList<long>> FindChunkStartsPositionsAsync(string inputFile, int partsCount, long chunkSize);
 }

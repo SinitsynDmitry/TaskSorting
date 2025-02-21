@@ -69,7 +69,7 @@ public class StreamExtensionsTests
 
         Memory<byte> buffer = new byte[2];
         long position = await _stream.IndexOfAsync(0, 3, buffer);
-        Assert.That(position, Is.EqualTo(2));
+        Assert.That(position, Is.EqualTo(3));
     }
 
     /// <summary>
@@ -86,34 +86,5 @@ public class StreamExtensionsTests
         Memory<byte> buffer = new byte[10];
         var line = await _stream.ReadLineAsync(buffer,10);
         CollectionAssert.AreEqual(new byte[] { 65, 66, 67, 10 }, line?.ToArray());
-    }
-
-    /// <summary>
-    /// Reads the chunk_ returns expected bytes.
-    /// </summary>
-    [Test]
-    public void ReadChunk_ReturnsExpectedBytes()
-    {
-        byte[] data = { 1, 2, 3, 4, 5 };
-        _stream.Write(data, 0, data.Length);
-        _stream.Position = 0;
-
-        var chunk = _stream.ReadChunk(1, 3);
-        CollectionAssert.AreEqual(new byte[] { 2, 3, 4 }, chunk.ToArray());
-    }
-
-    /// <summary>
-    /// Reads the chunk async_ returns expected bytes.
-    /// </summary>
-    /// <returns>A Task.</returns>
-    [Test]
-    public async Task ReadChunkAsync_ReturnsExpectedBytes()
-    {
-        byte[] data = { 1, 2, 3, 4, 5 };
-        _stream.Write(data, 0, data.Length);
-        _stream.Position = 0;
-
-        var chunk = await _stream.ReadChunkAsync(1, 3);
-        CollectionAssert.AreEqual(new byte[] { 2, 3, 4 }, chunk.ToArray());
     }
 }

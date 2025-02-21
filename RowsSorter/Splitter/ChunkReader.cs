@@ -1,48 +1,42 @@
-﻿using RowsSorter.Extensions;
-using RowsSorter.Interfaces;
-using RowsSorter.Shared;
+﻿using RowsSorter.Interfaces;
+using RowsSorter.Pipeline.Contexts;
 
 namespace RowsSorter.Splitter;
 
-internal class ChunkReader : IChunkReader
+public class ChunkReader : IChunkReader
 {
-    private readonly IFileStreamProvider _streamProvider;
+    private readonly IStreamProvider _streamProvider;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ChunkReader"/> class.
     /// </summary>
-    public ChunkReader()
+    public ChunkReader(IStreamProvider streamProvider)
     {
-        _streamProvider = new FileStreamProvider();
+        ArgumentNullException.ThrowIfNull(streamProvider);
+        _streamProvider = streamProvider;
     }
 
     /// <summary>
     /// Reads the chunk.
     /// </summary>
-    /// <param name="inputFile">The input file.</param>
-    /// <param name="startPosition">The start position.</param>
-    /// <param name="chunkSize">The chunk size.</param>
-    /// <param name="buffer">The buffer.</param>
-    /// <returns>A ReadOnlyMemory.</returns>
-    public ReadOnlyMemory<byte> ReadChunk(string inputFile, long startPosition, int chunkSize, byte[]? buffer = null)
+    /// <param name="context">The context.</param>
+    public void ReadChunk(ChunkProcessingContext context)
     {
-        using var fileStream = _streamProvider.GetReadStream(inputFile, chunkSize);
-
-        return fileStream.ReadChunk(startPosition, chunkSize, buffer);
+        using var fileStream = _streamProvider.GetReadStream(context.InputFile, context.Buffer.Length);
+        fileStream.Seek(context.StartPosition, SeekOrigin.Begin);
+        context.BytesRead = fileStream.Read(context.Buffer, 0, context.ChunkSize);
     }
 
     /// <summary>
     /// Reads the chunk async.
     /// </summary>
-    /// <param name="inputFile">The input file.</param>
-    /// <param name="startPosition">The start position.</param>
-    /// <param name="chunkSize">The chunk size.</param>
-    /// <param name="buffer">The buffer.</param>
-    /// <returns>A Task.</returns>
-    public async ValueTask<ReadOnlyMemory<byte>> ReadChunkAsync(string inputFile, long startPosition, int chunkSize, byte[]? buffer = null)
+    /// <param name="context">The context.</param>
+    /// <returns>A ValueTask.</returns>
+    public async ValueTask ReadChunkAsync(ChunkProcessingContext context)
     {
-        using var fileStream = _streamProvider.GetReadStream(inputFile, chunkSize, true);
+        using var fileStream = _streamProvider.GetReadStream(context.InputFile, context.ChunkSize, true);
 
-        return await fileStream.ReadChunkAsync(startPosition, chunkSize, buffer);
+        fileStream.Seek(context.StartPosition, SeekOrigin.Begin);
+        context.BytesRead = await fileStream.ReadAsync(context.Buffer, 0, context.ChunkSize);
     }
 }

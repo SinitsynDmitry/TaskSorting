@@ -1,4 +1,4 @@
-﻿using RowsSorter.Entities;
+﻿using RowsSorter.Pipeline.Contexts;
 
 namespace RowsSorter.Interfaces;
 
@@ -8,19 +8,13 @@ public interface IChunkWriter
     /// <summary>
     /// Writes the chunk.
     /// </summary>
-    /// <param name="outputFile">The output file.</param>
-    /// <param name="lines">The lines.</param>
-    /// <param name="chunkSize">The chunk size.</param>
-    /// <param name="buffer">The buffer.</param>
-    void WriteChunk(string outputFile, IReadOnlyList<ByteChunkData> lines, int chunkSize, byte[]? buffer = null);
+    /// <param name="context">The context.</param>
+    void WriteChunk(ChunkProcessingContext context);
 
     /// <summary>
     /// Writes the chunk async.
     /// </summary>
-    /// <param name="outputFile">The output file.</param>
-    /// <param name="lines">The lines.</param>
-    /// <param name="chunkSize">The chunk size.</param>
-    /// <param name="buffer">The buffer.</param>
+    /// <param name="context">The context.</param>
     /// <returns>A ValueTask.</returns>
-    ValueTask WriteChunkAsync(string outputFile, IReadOnlyList<ByteChunkData> lines, int chunkSize, byte[]? buffer = null);
+    ValueTask WriteChunkAsync(ChunkProcessingContext context);
 }

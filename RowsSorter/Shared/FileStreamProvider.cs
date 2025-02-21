@@ -1,27 +1,21 @@
-﻿using System.Buffers;
-using RowsSorter.Interfaces;
+﻿using RowsSorter.Interfaces;
 
 namespace RowsSorter.Shared;
 
-internal class FileStreamProvider : IFileStreamProvider
+public class FileStreamProvider : IStreamProvider
 {
-    private readonly ArrayPool<byte> _bufferPool;
     private const int BUFFER_SIZE = 4096;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="FileStreamProvider"/> class.
-    /// </summary>
-    public FileStreamProvider()
-    {
-        _bufferPool = ArrayPool<byte>.Shared;
-    }
 
     /// <summary>
     /// Gets the read stream.
     /// </summary>
     /// <param name="filePath">The file path.</param>
     /// <returns>A FileStream.</returns>
-    public FileStream GetReadStream(string filePath, int bufferSize = BUFFER_SIZE, bool isAsync = false)
+    public FileStream GetReadStream(
+        string filePath,
+        int bufferSize = BUFFER_SIZE,
+        bool isAsync = false
+    )
     {
         FileOptions options = FileOptions.SequentialScan;
         if (isAsync)
@@ -42,27 +36,15 @@ internal class FileStreamProvider : IFileStreamProvider
     }
 
     /// <summary>
-    /// Gets the pooled read stream.
-    /// </summary>
-    /// <param name="filePath">The file path.</param>
-    /// <param name="bufferSize">The buffer size.</param>
-    /// <param name="isAsync">If true, is async.</param>
-    /// <returns>A PooledFileStream.</returns>
-    public PooledFileStream GetPooledReadStream(string filePath, int bufferSize = BUFFER_SIZE, bool isAsync = false)
-    {
-        var buffer = _bufferPool.Rent(bufferSize);
-
-        var stream = GetReadStream(filePath, bufferSize, isAsync);
-
-        return new PooledFileStream(stream, buffer);
-    }
-
-    /// <summary>
     /// Gets the write stream.
     /// </summary>
     /// <param name="filePath">The file path.</param>
     /// <returns>A Stream.</returns>
-    public Stream GetWriteStream(string filePath, int bufferSize = BUFFER_SIZE, bool isAsync = false)
+    public Stream GetWriteStream(
+        string filePath,
+        int bufferSize = BUFFER_SIZE,
+        bool isAsync = false
+    )
     {
         FileOptions options = FileOptions.WriteThrough;
         if (isAsync)

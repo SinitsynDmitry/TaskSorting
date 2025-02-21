@@ -2,7 +2,7 @@
 
 namespace RowsSorter.Interfaces;
 
-internal interface ISortingQueue
+public interface ISortingQueue
 {
     /// <summary>
     /// Gets the count.
