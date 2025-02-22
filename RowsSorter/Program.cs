@@ -1,7 +1,7 @@
 ﻿using RowsSorter;
 using System.Diagnostics;
 
-internal class Program
+public class Program
 {
     /// <summary>
     /// Mains the.
@@ -12,7 +12,7 @@ internal class Program
     {
         string filePath;
         string outputPath;
-        int batchSize = 100000; // default value
+        double batchSizeMb = 4.0; // default value
 
         //outputPath = @"C:\test\out2\output.txt";
         //filePath = @"C:\test\test20M.txt";
@@ -24,10 +24,10 @@ internal class Program
             // Command line mode
             filePath = args[0];
             outputPath = args[1];
-            if (args.Length >= 3 && !int.TryParse(args[2], out batchSize))
+            if (args.Length >= 3 && !double.TryParse(args[2], out batchSizeMb))
             {
                 Console.WriteLine("Invalid batch size provided. Using default: 100000");
-                batchSize = 100000;
+                batchSizeMb = 4.0;
             }
         }
         else
@@ -42,7 +42,7 @@ internal class Program
 
             filePath = GetValidInputFile();
             outputPath = GetValidOutputPath();
-            batchSize = GetValidBatchSize();
+            batchSizeMb = GetValidBatchSize();
         }
 
         // Validate command line arguments
@@ -60,14 +60,14 @@ internal class Program
             Console.WriteLine($"Start");
             Console.WriteLine($"Input file: {fileInfo.FullName}");
             Console.WriteLine($"Output file: {outputPath}");
-            Console.WriteLine($"Batch size: {batchSize}");
+            Console.WriteLine($"Batch size: {batchSizeMb:F2} MB");
             Console.WriteLine($"File size: {fileSizeGb:F2} GB");
 
             var stopwatch = Stopwatch.StartNew();
             var sorter = new ExternalMergeSorter();
-            sorter.SortLargeFile(filePath, outputPath, batchSize);
+           // sorter.SortLargeFile(filePath, outputPath, (int)batchSizeMb * 1024 * 1024);
 
-           // await sorter.SortLargeFileAsync(filePath, outputPath, batchSize);
+             await sorter.SortLargeFileAsync(filePath, outputPath, (int)batchSizeMb * 1024 * 1024);
 
             stopwatch.Stop();
             Console.WriteLine($"Time elapsed: {stopwatch.Elapsed}");

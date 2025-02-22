@@ -75,7 +75,7 @@ rowsInFile = 10000000 - 0.2Gb
 
 ### File Sorter
 
-default value batchSize = 100000;
+default value batchSize(in MB) = 4;
 
 ```sh
 RowsSorter.exe <input_file> <output_file> [batch_size]
