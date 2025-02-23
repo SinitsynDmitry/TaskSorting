@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
+using FileCreator.Parts;
 
 namespace FileCreator;
 
@@ -39,12 +41,15 @@ internal class Program
             filePath = GetValidOutputPath();
             rowsInFile = GetValidRowCount();
         }
-        //filePath = @"C:\test\test20M.txt";
-        //rowsInFile = 1000000L;
+        //filePath = @"C:\test\test200M.txt";
+        //rowsInFile = 10000000L;
+
+        //filePath = @"C:\test\test2Gb.txt";
+        //rowsInFile = 100000000L;
 
         #region Vocabulary
 
-       string[] vocabulary = {
+        string[] vocabulary = {
 		      ".cat\n",
               ".hello world\n",
               ".programming\n",
@@ -246,8 +251,20 @@ internal class Program
 
         try
         {
-            var generator = new FileGenerator(vocabulary);
-            await generator.GenerateFileAsync(filePath, rowsInFile);
+            var config = GeneratorConfig.Default
+            .WithVocabulary(vocabulary);
+
+            var random = new FastRandomGenerator(Environment.TickCount);
+
+            var contentStrategy = new RandomVocabularyContentStrategy(config, random);
+
+            var generator = new FileGenerator(contentStrategy,config);
+
+            using (var writer = new FileContentWriter(filePath, config))
+            {
+                await generator.GenerateFileAsync(writer, rowsInFile);
+                //generator.GenerateFile(writer, rowsInFile);
+            }
 
             stopwatch.Stop();
             var fileInfo = new FileInfo(filePath);

@@ -7,10 +7,19 @@ public class TemporaryFileManager
 
     private readonly string _tempOutputDir;
     private List<string> _chunks;
+    /// <summary>
+    /// Gets a value indicating whether is empty.
+    /// </summary>
     public bool IsEmpty { get; private set; }
 
+    /// <summary>
+    /// Gets the output file.
+    /// </summary>
     public string OutputFile { get; private set; }
 
+    /// <summary>
+    /// Gets the count.
+    /// </summary>
     public int Count => _chunks.Count;
 
     /// <summary>
@@ -82,6 +91,7 @@ public class TemporaryFileManager
         var partSize = CalculateOptimalPartSize(_chunks.Count);
 
         var newChunks = new List<string>((int)Math.Ceiling(_chunks.Count / (double)partSize));
+
         for (int i = 0; i < _chunks.Count; i += partSize)
         {
             int end = Math.Min(i + partSize, _chunks.Count);

@@ -2,7 +2,13 @@
 
 public class TempFileCollection
 {
+    /// <summary>
+    /// Gets or sets the chunks.
+    /// </summary>
     public List<string> Chunks { get; set; } = new();
+    /// <summary>
+    /// Gets or sets the output file.
+    /// </summary>
     public string OutputFile { get; set; } = string.Empty;
 
     /// <summary>

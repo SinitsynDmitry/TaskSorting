@@ -100,7 +100,14 @@ public class ChunkSimpleMerger : IChunkMerger
 
     private sealed class MergerResources : IDisposable
     {
+        /// <summary>
+        /// Gets the context.
+        /// </summary>
         public MergingPipelineContext Context { get; }
+
+        /// <summary>
+        /// Gets the writer.
+        /// </summary>
         public BufferedStream Writer { get; }
 
         public MergerResources(MergingPipelineContext context, BufferedStream writer)

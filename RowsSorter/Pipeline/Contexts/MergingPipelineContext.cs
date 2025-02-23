@@ -5,9 +5,21 @@ namespace RowsSorter.Pipeline.Contexts;
 
 public class MergingPipelineContext : IDisposable
 {
+    /// <summary>
+    /// Gets the readers.
+    /// </summary>
     public IStreamCollection Readers { get; }
+    /// <summary>
+    /// Gets the sorting queue.
+    /// </summary>
     public ISortingQueue SortingQueue { get; }
+    /// <summary>
+    /// Gets the writer.
+    /// </summary>
     public Stream Writer { get; }
+    /// <summary>
+    /// Gets the buffer.
+    /// </summary>
     public byte[] Buffer { get; private set; }
 
     public MergingPipelineContext(
