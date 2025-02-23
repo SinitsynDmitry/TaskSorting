@@ -3,15 +3,19 @@ using RowsSorter.Shared;
 
 namespace RowsSorter.Merger
 {
-    public class FoldingChunkMerger : IChunkMerger
+    public class ChunkFoldingMerger : IChunkMerger
     {
         private readonly IChunkMerger _chunkMerger;
-        public FoldingChunkMerger(IChunkMerger chunkMerger)
+        public ChunkFoldingMerger(IChunkMerger chunkMerger)
         {
             _chunkMerger = chunkMerger;
         }
 
 
+        /// <summary>
+        /// Merges the sorted chunks.
+        /// </summary>
+        /// <param name="files">The files.</param>
         public void MergeSortedChunks(TempFileCollection files)
         {
             var fileManager = new TemporaryFileManager(files);
@@ -38,6 +42,11 @@ namespace RowsSorter.Merger
         }
 
 
+        /// <summary>
+        /// Merges the sorted chunks async.
+        /// </summary>
+        /// <param name="files">The files.</param>
+        /// <returns>A ValueTask.</returns>
         public async ValueTask MergeSortedChunksAsync(TempFileCollection files)
         {
             var fileManager = new TemporaryFileManager(files);

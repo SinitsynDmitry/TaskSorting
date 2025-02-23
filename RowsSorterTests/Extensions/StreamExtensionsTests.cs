@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework.Legacy;
 using RowsSorter.Extensions;
 
-namespace RowsSorterTests;
+namespace RowsSorterTests.Extensions;
 
 [TestFixture]
 public class StreamExtensionsTests

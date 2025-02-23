@@ -9,7 +9,7 @@ public interface IStreamProvider
     /// </summary>
     /// <param name="filePath">The file path.</param>
     /// <returns>A FileStream.</returns>
-    FileStream GetReadStream(string filePath, int bufferSize = BUFFER_SIZE, bool isAsync = false);
+    Stream GetReadStream(string filePath, int bufferSize = BUFFER_SIZE, bool isAsync = false);
 
     /// <summary>
     /// Gets the write stream.
@@ -18,9 +18,4 @@ public interface IStreamProvider
     /// <returns>A Stream.</returns>
     Stream GetWriteStream(string filePath, int bufferSize = BUFFER_SIZE, bool isAsync = false);
 
-    /// <summary>
-    /// Deletes the files.
-    /// </summary>
-    /// <param name="files">The files.</param>
-    void DeleteFiles(IReadOnlyList<string> files);
 }

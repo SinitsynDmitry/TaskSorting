@@ -28,6 +28,10 @@ public class ChunkSimpleMerger : IChunkMerger
         _mergerPipeline = customPipeline ?? CreateDefaultPipeline();
     }
 
+    /// <summary>
+    /// Merges the sorted chunks.
+    /// </summary>
+    /// <param name="files">The files.</param>
     public void MergeSortedChunks(TempFileCollection files)
     {
         try
@@ -44,6 +48,11 @@ public class ChunkSimpleMerger : IChunkMerger
         }
     }
 
+    /// <summary>
+    /// Merges the sorted chunks async.
+    /// </summary>
+    /// <param name="files">The files.</param>
+    /// <returns>A ValueTask.</returns>
     public async ValueTask MergeSortedChunksAsync(TempFileCollection files)
     {
         try
@@ -60,11 +69,20 @@ public class ChunkSimpleMerger : IChunkMerger
         }
     }
 
+    /// <summary>
+    /// Creates the default pipeline.
+    /// </summary>
+    /// <returns>An IPipeline.</returns>
     private static IPipeline<MergingPipelineContext> CreateDefaultPipeline() =>
         new ProcessingPipeline<MergingPipelineContext>()
             .AddStep(new InitializeQueueStep())
             .AddStep(new ProcessQueueStep());
 
+    /// <summary>
+    /// Creates the merger resources.
+    /// </summary>
+    /// <param name="files">The files.</param>
+    /// <returns>A MergerResources.</returns>
     private MergerResources CreateMergerResources(TempFileCollection files)
     {
         var readers = new StreamCollection(files.Chunks, _streamProvider);
@@ -82,15 +100,18 @@ public class ChunkSimpleMerger : IChunkMerger
 
     private sealed class MergerResources : IDisposable
     {
+        public MergingPipelineContext Context { get; }
+        public BufferedStream Writer { get; }
+
         public MergerResources(MergingPipelineContext context, BufferedStream writer)
         {
             Context = context;
             Writer = writer;
         }
 
-        public MergingPipelineContext Context { get; }
-        public BufferedStream Writer { get; }
-
+        /// <summary>
+        /// Disposes the.
+        /// </summary>
         public void Dispose()
         {
             Context.Dispose();

@@ -19,13 +19,16 @@ namespace RowsSorter.Pipeline.Steps
         /// <param name="context">The context.</param>
         public void Process(FileProcessingContext context)
         {
-            var files = new TempFileCollection
+            if (context.TempChunks.Count > 0)
             {
-                Chunks = context.TempChunks.Select(f => f.outputFile).ToList(),
-                OutputFile = context.OutputFile
-            };
+                var files = new TempFileCollection
+                {
+                    Chunks = context.TempChunks.Select(f => f.outputFile).ToList(),
+                    OutputFile = context.OutputFile,
+                };
 
-            _chunkMerger.MergeSortedChunks(files);
+                _chunkMerger.MergeSortedChunks(files);
+            }
         }
 
         /// <summary>
@@ -35,13 +38,16 @@ namespace RowsSorter.Pipeline.Steps
         /// <returns>A ValueTask.</returns>
         public async ValueTask ProcessAsync(FileProcessingContext context)
         {
-            var files = new TempFileCollection
+            if (context.TempChunks.Count > 0)
             {
-                Chunks = context.TempChunks.Select(f => f.outputFile).ToList(),
-                OutputFile = context.OutputFile
-            };
+                var files = new TempFileCollection
+                {
+                    Chunks = context.TempChunks.Select(f => f.outputFile).ToList(),
+                    OutputFile = context.OutputFile,
+                };
 
-            await _chunkMerger.MergeSortedChunksAsync(files);
+                await _chunkMerger.MergeSortedChunksAsync(files);
+            }
         }
     }
 }

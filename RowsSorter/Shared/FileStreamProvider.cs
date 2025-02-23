@@ -11,7 +11,7 @@ public class FileStreamProvider : IStreamProvider
     /// </summary>
     /// <param name="filePath">The file path.</param>
     /// <returns>A FileStream.</returns>
-    public FileStream GetReadStream(
+    public Stream GetReadStream(
         string filePath,
         int bufferSize = BUFFER_SIZE,
         bool isAsync = false
@@ -60,17 +60,5 @@ public class FileStreamProvider : IStreamProvider
             BUFFER_SIZE,
             options
         );
-    }
-
-    /// <summary>
-    /// Deletes the files.
-    /// </summary>
-    /// <param name="files">The files.</param>
-    public void DeleteFiles(IReadOnlyList<string> files)
-    {
-        foreach (var file in files)
-        {
-            File.Delete(file);
-        }
     }
 }

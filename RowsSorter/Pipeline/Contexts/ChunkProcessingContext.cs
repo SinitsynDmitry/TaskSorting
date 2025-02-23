@@ -4,9 +4,13 @@ namespace RowsSorter.Pipeline.Contexts;
 
 public class ChunkProcessingContext
 {
-    #region Private Constructors
-
-    private ChunkProcessingContext(string inputFile, string outputFile, long startPosition, int chunkSize, byte[] buffer)
+    private ChunkProcessingContext(
+        string inputFile,
+        string outputFile,
+        long startPosition,
+        int chunkSize,
+        byte[] buffer
+    )
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(inputFile);
         ArgumentException.ThrowIfNullOrWhiteSpace(outputFile);
@@ -20,22 +24,21 @@ public class ChunkProcessingContext
         Buffer = buffer;
     }
 
-    #endregion Private Constructors
-
-    #region Public Properties
-
     /// <summary>
     /// Gets or sets the buffer.
     /// </summary>
     public byte[] Buffer { get; set; }
+
     /// <summary>
     /// Gets or sets the bytes read.
     /// </summary>
     public int BytesRead { get; set; }
+
     /// <summary>
     /// Gets the chunk size.
     /// </summary>
     public int ChunkSize { get; }
+
     /// <summary>
     /// Gets the input file.
     /// </summary>
@@ -45,14 +48,11 @@ public class ChunkProcessingContext
     /// Gets the output file.
     /// </summary>
     public string OutputFile { get; }
+
     /// <summary>
     /// Gets the start position.
     /// </summary>
     public long StartPosition { get; }
-
-    #endregion Public Properties
-
-    #region Public Methods
 
     /// <summary>
     /// Creates the.
@@ -62,12 +62,16 @@ public class ChunkProcessingContext
     /// <param name="startPosition">The start position.</param>
     /// <param name="chunkSize">The chunk size.</param>
     /// <returns>A ChunkProcessingContext.</returns>
-    public static ChunkProcessingContext Create(string inputFile, string outputFile, long startPosition, int chunkSize)
+    public static ChunkProcessingContext Create(
+        string inputFile,
+        string outputFile,
+        long startPosition,
+        int chunkSize
+    )
     {
         var buffer = ArrayPool<byte>.Shared.Rent(chunkSize);
 
         return new ChunkProcessingContext(inputFile, outputFile, startPosition, chunkSize, buffer);
-
     }
 
     /// <summary>
@@ -81,6 +85,4 @@ public class ChunkProcessingContext
             Buffer = null;
         }
     }
-
-    #endregion Public Methods
 }

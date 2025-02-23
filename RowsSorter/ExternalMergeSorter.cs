@@ -22,7 +22,7 @@ public class ExternalMergeSorter : IExternalMergeSorter
         _filePipeline = new ProcessingPipeline<FileProcessingContext>()
         .AddStep(new FileChunkMarkingStep(new FileChunkMarker(fileStreamProvider,(byte)'\n')))
         .AddStep(new ChunkProcessingStep(new ChunkReader(fileStreamProvider), new LineSorter(byteLineComparer), new ChunkWriter(fileStreamProvider)))
-        .AddStep(new ChunkMergeStep(new FoldingChunkMerger(new ChunkSimpleMerger(new ChunkDataComparer(byteLineComparer), fileStreamProvider))));
+        .AddStep(new ChunkMergeStep(new ChunkFoldingMerger(new ChunkSimpleMerger(new ChunkDataComparer(byteLineComparer), fileStreamProvider))));
     }
 
     /// <summary>

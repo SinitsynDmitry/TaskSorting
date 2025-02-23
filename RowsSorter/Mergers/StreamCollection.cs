@@ -7,7 +7,7 @@ namespace RowsSorter.Merger;
 
 public class StreamCollection : IStreamCollection
 {
-    private readonly FileStream[] _readers;
+    private readonly Stream[] _readers;
     private bool _disposed;
 
     /// <summary>
@@ -32,7 +32,7 @@ public class StreamCollection : IStreamCollection
     /// </summary>
     /// <param name="index">The index.</param>
     /// <returns>A FileStream.</returns>
-    private FileStream GetStream(int index)
+    private Stream GetStream(int index)
     {
         return _readers[index];
     }

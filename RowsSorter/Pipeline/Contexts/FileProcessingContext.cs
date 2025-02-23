@@ -2,19 +2,23 @@
 
 public class FileProcessingContext
 {
-    #region Public Constructors
-
-    public FileProcessingContext(string inputFile, string outputFile, int baseChunkSize, string tempOutputDir)
+    public FileProcessingContext(
+        string inputFile,
+        string outputFile,
+        int baseChunkSize,
+        string tempOutputDir
+    )
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(inputFile);
+        ArgumentException.ThrowIfNullOrWhiteSpace(outputFile);
+        ArgumentException.ThrowIfNullOrWhiteSpace(tempOutputDir);
+        ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(baseChunkSize, 0);
+
         InputFile = inputFile;
         BaseChunkSize = baseChunkSize;
         TempOutputDir = tempOutputDir;
         OutputFile = outputFile;
     }
-
-    #endregion Public Constructors
-
-    #region Public Properties
 
     /// <summary>
     /// Gets the base chunk size.
@@ -40,6 +44,4 @@ public class FileProcessingContext
     /// Gets the temp output dir.
     /// </summary>
     public string TempOutputDir { get; }
-
-    #endregion Public Properties
 }

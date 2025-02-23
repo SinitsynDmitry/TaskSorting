@@ -13,6 +13,10 @@ public class TemporaryFileManager
 
     public int Count => _chunks.Count;
 
+    /// <summary>
+    /// Gets the chunks.
+    /// </summary>
+    /// <returns>A list of string.</returns>
     public IReadOnlyList<string> GetChunks() => _chunks.AsReadOnly();
 
     public TemporaryFileManager(
@@ -30,21 +34,41 @@ public class TemporaryFileManager
         _minChunksPerTask = minChunksPerTask;
     }
 
+    /// <summary>
+    /// Clears the.
+    /// </summary>
     public void Clear()
     {
         _chunks.Clear();
     }
 
+    /// <summary>
+    /// Gets the temp file name.
+    /// </summary>
+    /// <param name="counter">The counter.</param>
+    /// <param name="start">The start.</param>
+    /// <param name="end">The end.</param>
+    /// <returns>A string.</returns>
     public string GetTempFileName(int counter, int start, int end)
     {
         return Path.Combine(_tempOutputDir, $"chunk_{counter}_{start}_{end}.tmp");
     }
 
+    /// <summary>
+    /// Calculates the optimal part size.
+    /// </summary>
+    /// <param name="totalChunks">The total chunks.</param>
+    /// <returns>An int.</returns>
     private int CalculateOptimalPartSize(int totalChunks)
     {
         return Math.Clamp((int)Math.Sqrt(totalChunks), _minChunksPerTask, _maxChunksPerTask);
     }
 
+    /// <summary>
+    /// Gets the next merge batch.
+    /// </summary>
+    /// <param name="index">The index.</param>
+    /// <returns>A list of TempFileCollections.</returns>
     public List<TempFileCollection> GetNextMergeBatch(int index = 0)
     {
         var mergeBatches = new List<TempFileCollection>();

@@ -1,7 +1,4 @@
-﻿using RowsSorter.Extensions;
-using RowsSorter.Shared;
-
-namespace RowsSorter.Entities;
+﻿namespace RowsSorter.Entities;
 
 public struct ByteChunkData 
 {
@@ -28,15 +25,6 @@ public struct ByteChunkData
     public void WriteTo(Stream stream)
     {
         stream.Write(_data.Span);
-    }
-
-    /// <summary>
-    /// Copies the to span.
-    /// </summary>
-    /// <param name="buffer">The _buffer.</param>
-    public void CopyToSpan(Span<byte> buffer)
-    {
-        _data.Span.CopyTo(buffer);
     }
 }
 

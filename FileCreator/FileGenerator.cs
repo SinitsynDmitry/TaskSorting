@@ -45,7 +45,8 @@ public class FileGenerator
     /// <returns>A Task.</returns>
     public async Task GenerateFileAsync(string filePath, long rowsInFile)
     {
-        File.Delete(filePath);
+        if (File.Exists(filePath))
+            File.Delete(filePath);
 
         using var writer = new StreamWriter(filePath, true, Encoding.UTF8, bufferSize: BUFFER_SIZE);
         writer.AutoFlush = false;
@@ -80,7 +81,8 @@ public class FileGenerator
     /// <param name="rowsInFile">The rows in file.</param>
     public void GenerateFile(string filePath, long rowsInFile)
     {
-        File.Delete(filePath);
+        if (File.Exists(filePath))
+            File.Delete(filePath);
 
         using var writer = new StreamWriter(filePath, true, Encoding.UTF8, bufferSize: BUFFER_SIZE);
         writer.AutoFlush = false;
@@ -115,7 +117,8 @@ public class FileGenerator
     /// <param name="rowsInFile">The rows in file.</param>
     public void GenerateFileAsParallel(string filePath, long rowsInFile)
     {
-        File.Delete(filePath);
+        if (File.Exists(filePath))
+            File.Delete(filePath);
 
         using var writer = new StreamWriter(filePath, true, Encoding.UTF8, bufferSize: BUFFER_SIZE);
         writer.AutoFlush = false;
@@ -137,7 +140,8 @@ public class FileGenerator
     /// <returns>A Task.</returns>
     public async Task GenerateFileAsParallelAsync(string filePath, long rowsInFile)
     {
-        File.Delete(filePath);
+        if (File.Exists(filePath))
+            File.Delete(filePath);
         using var writer = new StreamWriter(filePath, true, Encoding.UTF8, bufferSize: BUFFER_SIZE);
         writer.AutoFlush = false;
 
