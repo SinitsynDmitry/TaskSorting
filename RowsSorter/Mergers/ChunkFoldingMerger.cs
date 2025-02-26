@@ -19,22 +19,23 @@ namespace RowsSorter.Merger
         public void MergeSortedChunks(TempFileCollection files)
         {
             var fileManager = new TemporaryFileManager(files);
+            var mergeTasks = new List<Task>((int)Math.Ceiling(files.Chunks.Count / (double)fileManager.MaxChunksPerTask));
             var counter = 0;
-            while (!fileManager.IsEmpty && fileManager.Count > 2)
+            while (!fileManager.IsEmpty && fileManager.Count >= 2)
             {
                 var batches = fileManager.GetNextMergeBatch(counter);
-                var mergeTasks = new List<Task>();
-
+               
                 foreach (var item in batches)
                 {
+                    var proccesingFiles = item;
                     mergeTasks.Add(Task.Run(() =>
                     {
-                        _chunkMerger.MergeSortedChunks(item);
+                        _chunkMerger.MergeSortedChunks(proccesingFiles);
                     }));
                 }
 
                 Task.WhenAll(mergeTasks).GetAwaiter().GetResult();
-
+                mergeTasks.Clear();
                 counter++;
             }
 
@@ -50,11 +51,11 @@ namespace RowsSorter.Merger
         public async ValueTask MergeSortedChunksAsync(TempFileCollection files)
         {
             var fileManager = new TemporaryFileManager(files);
+            var mergeTasks = new List<Task>((int)Math.Ceiling(files.Chunks.Count / (double)fileManager.MaxChunksPerTask));
             var counter = 0;
             while (!fileManager.IsEmpty && fileManager.Count > 2)
             {
                 var batches = fileManager.GetNextMergeBatch(counter);
-                var mergeTasks = new List<Task>();
 
                 foreach (var item in batches)
                 {
@@ -65,7 +66,7 @@ namespace RowsSorter.Merger
                 }
 
                 await Task.WhenAll(mergeTasks);
-
+                mergeTasks.Clear();
                 counter++;
             }
 

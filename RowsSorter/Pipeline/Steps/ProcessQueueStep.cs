@@ -20,7 +20,8 @@ namespace RowsSorter.Pipeline.Steps
                 var line = context.Readers.ReadLine(index, context.Buffer);
                 if (line is not null)
                 {
-                    context.SortingQueue.Enqueue(line.Value, index);
+                    taskItem.Value = line.Value;
+                    context.SortingQueue.Enqueue(taskItem);
                 }
             }
         }
@@ -41,7 +42,8 @@ namespace RowsSorter.Pipeline.Steps
                 var line = await context.Readers.ReadLineAsync(index, context.Buffer);
                 if (line is not null)
                 {
-                    context.SortingQueue.Enqueue(line.Value, index);
+                    taskItem.Value = line.Value;
+                    context.SortingQueue.Enqueue(taskItem);
                 }
             }
         }

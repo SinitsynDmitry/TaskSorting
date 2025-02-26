@@ -1,26 +1,27 @@
 ﻿namespace RowsSorter.Entities;
 
-public struct TaskItem
+public class TaskItem
 {
-    /// <summary>
-    /// Gets the row.
-    /// </summary>
-    public ByteChunkData Value { get; init; }
 
     /// <summary>
-    /// Gets the priority.
+    /// Gets or sets the value.
+    /// </summary>
+    public ByteChunkData Value { get; set; }
+
+    /// <summary>
+    /// Gets the index.
     /// </summary>
     public int Index { get; init; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="TaskItem"/> class.
     /// </summary>
-    /// <param name="row">The row.</param>
-    /// <param name="priority">The priority.</param>
-    public TaskItem(ByteChunkData row, int priority)
+    /// <param name="value">The value.</param>
+    /// <param name="index">The index.</param>
+    public TaskItem(ByteChunkData value, int index)
     {
-        Value = row;
-        Index = priority;
+        Value = value;
+        Index = index;
     }
 }
 

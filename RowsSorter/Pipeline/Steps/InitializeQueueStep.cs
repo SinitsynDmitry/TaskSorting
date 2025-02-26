@@ -1,4 +1,6 @@
-﻿using RowsSorter.Interfaces;
+﻿using RowsSorter.Entities;
+using System;
+using RowsSorter.Interfaces;
 using RowsSorter.Pipeline.Contexts;
 
 namespace RowsSorter.Pipeline.Steps;
@@ -16,7 +18,8 @@ public class InitializeQueueStep : IProcessingStep<MergingPipelineContext>
             var line = context.Readers.ReadLine(i, context.Buffer);
             if (line is not null)
             {
-                context.SortingQueue.Enqueue(line.Value, i);
+                var taskItem = new TaskItem(line.Value, i);
+                context.SortingQueue.Enqueue(taskItem);
             }
         }
     }
@@ -33,7 +36,8 @@ public class InitializeQueueStep : IProcessingStep<MergingPipelineContext>
             var line = await context.Readers.ReadLineAsync(i, context.Buffer);
             if (line is not null)
             {
-                context.SortingQueue.Enqueue(line.Value, i);
+                var taskItem = new TaskItem(line.Value, i);
+                context.SortingQueue.Enqueue(taskItem);
             }
         }
     }

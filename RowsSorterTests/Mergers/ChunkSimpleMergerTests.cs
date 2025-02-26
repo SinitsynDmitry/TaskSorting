@@ -29,7 +29,7 @@ public class ChunkSimpleMergerTests
 
         _files = new TempFileCollection
         {
-            Chunks = new List<string> { "chunk1.tmp", "chunk2.tmp" },
+            Chunks = new ArraySegment<string>(["chunk1.tmp", "chunk2.tmp"]),
             OutputFile = "output.tmp"
         };
 

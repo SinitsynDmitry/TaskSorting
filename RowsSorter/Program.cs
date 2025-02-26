@@ -13,37 +13,38 @@ public class Program
         string filePath;
         string outputPath;
         double batchSizeMb = 4.0; // default value
+       // double batchSizeMb = 0.08;
 
-        //outputPath = @"C:\test\out2\output.txt";
+        outputPath = @"C:\test\out2\output.txt";
         //filePath = @"C:\test\test20M.txt";
-        //filePath = @"C:\test\test200M.txt";
+        filePath = @"C:\test\test200M.txt";
         //filePath = @"C:\test\test2G.txt";
 
-        if (args.Length >= 2)
-        {
-            // Command line mode
-            filePath = args[0];
-            outputPath = args[1];
-            if (args.Length >= 3 && !double.TryParse(args[2], out batchSizeMb))
-            {
-                Console.WriteLine("Invalid batch size provided. Using default: 100000");
-                batchSizeMb = 4.0;
-            }
-        }
-        else
-        {
-            // Interactive mode
-            if (args.Length > 0)
-            {
-                Console.WriteLine("Insufficient arguments. Usage:");
-                Console.WriteLine("RowsSorter.exe <input_file> <output_file> [batch_size]");
-                Console.WriteLine("Switching to interactive mode...\n");
-            }
+        //if (args.Length >= 2)
+        //{
+        //    // Command line mode
+        //    filePath = args[0];
+        //    outputPath = args[1];
+        //    if (args.Length >= 3 && !double.TryParse(args[2], out batchSizeMb))
+        //    {
+        //        Console.WriteLine("Invalid batch size provided. Using default: 100000");
+        //        batchSizeMb = 4.0;
+        //    }
+        //}
+        //else
+        //{
+        //    // Interactive mode
+        //    if (args.Length > 0)
+        //    {
+        //        Console.WriteLine("Insufficient arguments. Usage:");
+        //        Console.WriteLine("RowsSorter.exe <input_file> <output_file> [batch_size]");
+        //        Console.WriteLine("Switching to interactive mode...\n");
+        //    }
 
-            filePath = GetValidInputFile();
-            outputPath = GetValidOutputPath();
-            batchSizeMb = GetValidBatchSize();
-        }
+        //    filePath = GetValidInputFile();
+        //    outputPath = GetValidOutputPath();
+        //    batchSizeMb = GetValidBatchSize();
+        //}
 
         // Validate command line arguments
         if (!File.Exists(filePath))
@@ -65,9 +66,9 @@ public class Program
 
             var stopwatch = Stopwatch.StartNew();
             var sorter = new ExternalMergeSorter();
-           // sorter.SortLargeFile(filePath, outputPath, (int)batchSizeMb * 1024 * 1024);
+            sorter.SortLargeFile(filePath, outputPath, (int)(batchSizeMb * 1024 * 1024));
 
-             await sorter.SortLargeFileAsync(filePath, outputPath, (int)batchSizeMb * 1024 * 1024);
+            // await sorter.SortLargeFileAsync(filePath, outputPath, (int)batchSizeMb * 1024 * 1024);
 
             stopwatch.Stop();
             Console.WriteLine($"Time elapsed: {stopwatch.Elapsed}");

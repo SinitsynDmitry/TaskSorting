@@ -23,7 +23,6 @@ public interface ISortingQueue
     /// <summary>
     /// Enqueues the.
     /// </summary>
-    /// <param name="line">The line.</param>
-    /// <param name="index">The index.</param>
-    void Enqueue(ByteChunkData line, int index);
+    /// <param name="taskItem">The task item.</param>
+    void Enqueue(TaskItem taskItem);
 }

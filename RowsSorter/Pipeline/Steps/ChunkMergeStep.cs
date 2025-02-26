@@ -23,7 +23,7 @@ namespace RowsSorter.Pipeline.Steps
             {
                 var files = new TempFileCollection
                 {
-                    Chunks = context.TempChunks.Select(f => f.outputFile).ToList(),
+                    Chunks = new ArraySegment<string>(context.TempChunks.Select(f => f.outputFile).ToArray()),
                     OutputFile = context.OutputFile,
                 };
 
@@ -42,7 +42,7 @@ namespace RowsSorter.Pipeline.Steps
             {
                 var files = new TempFileCollection
                 {
-                    Chunks = context.TempChunks.Select(f => f.outputFile).ToList(),
+                    Chunks = new ArraySegment<string>(context.TempChunks.Select(f => f.outputFile).ToArray()),
                     OutputFile = context.OutputFile,
                 };
 

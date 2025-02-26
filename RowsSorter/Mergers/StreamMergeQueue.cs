@@ -22,9 +22,9 @@ public class StreamMergeQueue : ISortingQueue
     /// </summary>
     /// <param name="line">The line.</param>
     /// <param name="index">The index.</param>
-    public void Enqueue(ByteChunkData line, int index)
+    public void Enqueue(TaskItem taskItem)
     {
-        _priorityQueue.Enqueue(new TaskItem(line, index), line);
+        _priorityQueue.Enqueue(taskItem, taskItem.Value);
     }
 
     /// <summary>

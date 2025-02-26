@@ -1,66 +1,7 @@
-﻿using System.Buffers;
-using RowsSorter.Interfaces;
+﻿using RowsSorter.Interfaces;
 using RowsSorter.Pipeline.Contexts;
 
 namespace RowsSorter.Pipeline.Steps;
-
-public class LineSorterProcessingStep : IProcessingStep<ChunkProcessingContext>
-{
-    private readonly ILineSorter _lineSorter;
-
-    public LineSorterProcessingStep(ILineSorter lineSorter)
-    {
-        _lineSorter = lineSorter;
-    }
-
-    /// <summary>
-    /// Processes the.
-    /// </summary>
-    /// <param name="context">The context.</param>
-    public void Process(ChunkProcessingContext context)
-    {
-        _lineSorter.Sort(context);
-    }
-
-    /// <summary>
-    /// Processes the async.
-    /// </summary>
-    /// <param name="context">The context.</param>
-    /// <returns>A ValueTask.</returns>
-    public async ValueTask ProcessAsync(ChunkProcessingContext context)
-    {
-        _lineSorter.Sort(context);
-    }
-}
-
-public class ChunkReaderProcessingStep : IProcessingStep<ChunkProcessingContext>
-{
-    private readonly IChunkReader _chunkReader;
-
-    public ChunkReaderProcessingStep(IChunkReader chunkReader)
-    {
-        _chunkReader = chunkReader;
-    }
-
-    /// <summary>
-    /// Processes the.
-    /// </summary>
-    /// <param name="context">The context.</param>
-    public void Process(ChunkProcessingContext context)
-    {
-        _chunkReader.ReadChunk(context);
-    }
-
-    /// <summary>
-    /// Processes the async.
-    /// </summary>
-    /// <param name="context">The context.</param>
-    /// <returns>A ValueTask.</returns>
-    public async ValueTask ProcessAsync(ChunkProcessingContext context)
-    {
-        await _chunkReader.ReadChunkAsync(context);
-    }
-}
 
 public class ChunkProcessingStep : IProcessingStep<FileProcessingContext>
 {

@@ -16,7 +16,7 @@ public class ChunkFoldingMergerTests
     public void SetUp()
     {
         _chunkMergerMock = new Mock<IChunkMerger>();
-        _files = new TempFileCollection { Chunks = new List<string> { "chunk1.tmp", "chunk2.tmp", "chunk3.tmp" } };
+        _files = new TempFileCollection { Chunks = new ArraySegment<string>(["chunk1.tmp", "chunk2.tmp", "chunk3.tmp"])};
         _foldingMerger = new ChunkFoldingMerger(_chunkMergerMock.Object);
     }
 
@@ -39,7 +39,7 @@ public class ChunkFoldingMergerTests
     {
         var files = new TempFileCollection
         {
-            Chunks = Enumerable.Range(1, 10).Select(i => $"chunk{i}.tmp").ToList(),
+            Chunks = Enumerable.Range(1, 10).Select(i => $"chunk{i}.tmp").ToArray(),
             OutputFile = "output.tmp"
         };
 
@@ -53,7 +53,7 @@ public class ChunkFoldingMergerTests
     {
         var files = new TempFileCollection
         {
-            Chunks = Enumerable.Range(1, 10).Select(i => $"chunk{i}.tmp").ToList(),
+            Chunks = Enumerable.Range(1, 10).Select(i => $"chunk{i}.tmp").ToArray(),
             OutputFile = "output.tmp"
         };
 

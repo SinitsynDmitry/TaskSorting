@@ -13,7 +13,7 @@ public class TemporaryFileManagerTests
     {
         _files = new TempFileCollection
         {
-            Chunks = new List<string> { "chunk1.tmp", "chunk2.tmp", "chunk3.tmp" },
+            Chunks = new ArraySegment<string>(["chunk1.tmp", "chunk2.tmp", "chunk3.tmp"]),
             OutputFile = "output.tmp"
         };
         _manager = new TemporaryFileManager(_files);

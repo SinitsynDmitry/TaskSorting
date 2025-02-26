@@ -30,7 +30,7 @@ public class ChunkMergeStepTests
 
         var expectedFiles = new TempFileCollection
         {
-            Chunks = context.TempChunks.Select(f => f.outputFile).ToList(),
+            Chunks = context.TempChunks.Select(f => f.outputFile).ToArray(),
             OutputFile = context.OutputFile
         };
 
@@ -53,7 +53,7 @@ public class ChunkMergeStepTests
 
         var expectedFiles = new TempFileCollection
         {
-            Chunks = context.TempChunks.Select(f => f.outputFile).ToList(),
+            Chunks = context.TempChunks.Select(f => f.outputFile).ToArray(),
             OutputFile = context.OutputFile
         };
 

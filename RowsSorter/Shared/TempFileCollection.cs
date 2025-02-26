@@ -5,7 +5,8 @@ public class TempFileCollection
     /// <summary>
     /// Gets or sets the chunks.
     /// </summary>
-    public List<string> Chunks { get; set; } = new();
+    public ArraySegment<string> Chunks { get; set; }
+
     /// <summary>
     /// Gets or sets the output file.
     /// </summary>
