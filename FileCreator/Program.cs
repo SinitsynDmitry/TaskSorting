@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using FileCreator.Core;
 using FileCreator.Parts;
 
 namespace FileCreator;

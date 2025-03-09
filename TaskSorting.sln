@@ -9,6 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RowsSorter", "RowsSorter\Ro
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E2858F18-C8DC-43CB-AB57-A12562E96D12}"
 	ProjectSection(SolutionItems) = preProject
+		copy_structure_for_tests.bat = copy_structure_for_tests.bat
 		README.md = README.md
 	EndProjectSection
 EndProject
